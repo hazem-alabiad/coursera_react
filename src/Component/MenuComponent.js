@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardImg, CardBody, CardTitle } from "reactstrap";
+import { Card, CardImg, CardBody, CardTitle, CardImgOverlay } from "reactstrap";
 import DishDetail from "./DishDetailComponent";
 
 export default class Menu extends Component {
@@ -25,9 +25,9 @@ export default class Menu extends Component {
             }}
           >
             <CardImg src={dish.image} alt={dish.name} />
-            <CardBody>
+            <CardImgOverlay>
               <CardTitle heading="true">{dish.name}</CardTitle>
-            </CardBody>
+            </CardImgOverlay>
           </Card>
         </div>
       );

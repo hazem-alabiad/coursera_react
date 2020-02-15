@@ -19,11 +19,11 @@ export default class DishDetail extends Component {
     // else, if there are comment(s)
     const commentElement = comments.map(commentObject => {
       return (
-        <li>
+        <li key={commentObject.id}>
           <p>{commentObject.comment}</p>
           <p>
             {"-- "} 
-            {commentObject.author} {this.formatDate(commentObject.date)}
+            {commentObject.author}, {this.formatDate(commentObject.date)}
           </p>
         </li>
       );
