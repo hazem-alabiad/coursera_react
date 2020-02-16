@@ -2,17 +2,6 @@ import React, { Component } from "react";
 import { Card, CardImg, CardBody, CardTitle, CardText } from "reactstrap";
 
 export default class DishDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  formatDate(date){
-    var re = new RegExp("-", "g")
-    const dateString = date.split("T")[0]
-    return dateString.replace(re, ",")
-  }
-
   renderComments(comments) {
     // if no comments return empty `div`
     if (!comments) return <div></div>;
@@ -22,8 +11,13 @@ export default class DishDetail extends Component {
         <li key={commentObject.id}>
           <p>{commentObject.comment}</p>
           <p>
-            {"-- "} 
-            {commentObject.author}, {this.formatDate(commentObject.date)}
+            --
+            {commentObject.author},{" "}
+            {new Intl.DateTimeFormat("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "2-digit"
+            }).format(new Date(Date.parse(commentObject.date)))}
           </p>
         </li>
       );
@@ -43,18 +37,20 @@ export default class DishDetail extends Component {
     // else, if there is a dish selected
     const { id, name, image, description, comments } = dish; // destructing
     return (
-      <div className="row">
-        <div className="col-12 col-md-5 m-1">
-          <Card key={id}>
-            <CardImg src={image} alt={name} />
-            <CardBody>
-              <CardTitle heading="true">{name}</CardTitle>
-              <CardText>{description}</CardText>
-            </CardBody>
-          </Card>
-        </div>
-        <div className="col-12 col-md-5 m-1">
-          {this.renderComments(comments)}
+      <div className="container">
+        <div className="row">
+          <div className="col-12 col-md-5 m-1">
+            <Card key={id}>
+              <CardImg src={image} alt={name} />
+              <CardBody>
+                <CardTitle heading="true">{name}</CardTitle>
+                <CardText>{description}</CardText>
+              </CardBody>
+            </Card>
+          </div>
+          <div className="col-12 col-md-5 m-1">
+            {this.renderComments(comments)}
+          </div>
         </div>
       </div>
     );
