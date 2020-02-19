@@ -1,12 +1,13 @@
 import React from "react";
-import { Card, CardImg, CardBody, CardTitle, CardText } from "reactstrap";
+import { Card, CardImg, CardBody, CardTitle, CardText, Breadcrumb, BreadcrumbItem } from "reactstrap";
+import { Link } from "react-router-dom";
 
-function RenderComments({ dish }) {
-  // if no comments return empty `div`d
-  if (!dish || !dish.comments) return <div></div>;
+function RenderComments({ comments }) {
+  // if no comments return empty `div`
+  if (!comments) return <div></div>;
   // else, if there are comment(s)
 
-  const commentElement = dish.comments.map(commentObject => {
+  const commentElement = comments.map(commentObject => {
     return (
       <li key={commentObject.id}>
         <p>{commentObject.comment}</p>
@@ -51,11 +52,17 @@ export const DishDetail = props => {
   return (
     <div className="container">
       <div className="row">
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/menu">Menu</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+        </Breadcrumb>
         <div className="col-12 col-md-5 m-1">
           <RenderDish dish={props.dish} />
         </div>
         <div className="col-12 col-md-5 m-1">
-          <RenderComments dish={props.dish} />
+          <RenderComments comments={props.comments} />
         </div>
       </div>
     </div>
