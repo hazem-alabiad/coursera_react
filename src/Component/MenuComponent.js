@@ -36,7 +36,7 @@ export const Menu = props => {
           <Link to="/home">Home</Link>
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <Link to="/menu" active>Menu</Link>
+          <Link to="/menu" active="true">Menu</Link>
         </BreadcrumbItem>
       </Breadcrumb>
       <div className="col-12">

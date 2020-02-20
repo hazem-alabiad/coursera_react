@@ -2,7 +2,7 @@ import React from "react";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from "react-router-dom";
 
-export default function Contact(props) {
+export default function Contact() {
   return (
     <div className="container">
       <Breadcrumb>
