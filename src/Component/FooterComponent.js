@@ -80,7 +80,7 @@ export default function Footer(props) {
         </div>
         <div className="row justify-content-center">
           <div className="col-auto">
-            <p>© Copyright 2018 Ristorante Con Fusion</p>
+            <p>© by <a href="https://www.linkedin.com/in/hazem-a-1954b59a/">Hazem. W</a></p>
           </div>
         </div>
       </div>
