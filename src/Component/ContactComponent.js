@@ -113,9 +113,9 @@ export default class Contact extends Component {
                     model=".firstName"
                     show="touched"
                     messages={{
-                      required: "Required, ",
-                      minLength: "Must be greater than 2 characters, ",
-                      maxLength: "Must be 15 characters or less, "
+                      required: <div>Required</div>,
+                      minLength: <div>Must be greater than 2 characters</div>,
+                      maxLength: <div>Must be 15 characters or less</div>
                     }}
                   />
                 </Col>
@@ -142,9 +142,9 @@ export default class Contact extends Component {
                     model=".lastName"
                     show="touched"
                     messages={{
-                      required: "Required, ",
-                      minLength: "Must be greater than 2 characters, ",
-                      maxLength: "Must be 15 characters or less, "
+                      required: <div>Required</div>,
+                      minLength: <div>Must be greater than 2 characters</div>,
+                      maxLength: <div>Must be 15 characters or less</div>
                     }}
                   />
                 </Col>
@@ -172,10 +172,10 @@ export default class Contact extends Component {
                     model=".telNum"
                     show="touched"
                     messages={{
-                      required: "Required, ",
-                      minLength: "Must be greater than 2 characters, ",
-                      maxLength: "Must be 15 characters or less, ",
-                      isNumber: "Must be a number, "
+                      required: <div>Required</div>,
+                      minLength: <div>Must be greater than 2 characters</div>,
+                      maxLength: <div>Must be 15 characters or less</div>,
+                      isNumber: <div>Must be a number</div>
                     }}
                   />
                 </Col>
