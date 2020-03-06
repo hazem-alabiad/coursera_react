@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { Component } from "react";
 import { Menu } from "./MenuComponent";
 import Header from "./HeaderComponent";
@@ -8,15 +10,21 @@ import Contact from "./ContactComponent";
 import { DishDetail } from "./DishDetailComponent";
 import About from "./AboutComponent";
 import { connect } from "react-redux";
+import { addComment } from "../redux/ActionCreators";
 
-const mapStateToProps = (state) => {
-  return{
+const mapStateToProps = state => {
+  return {
     comments: state.comments,
     dishes: state.dishes,
     leaders: state.leaders,
     promotions: state.promotions
   };
 };
+
+const mapDispatchToProps = dispatch => ({
+  addComment: (dishId, author, rating, comment) => dispatch(addComment(dishId, author, rating, comment))
+});
+
 export class Main extends Component {
   render() {
     const HomPage = () => {
@@ -24,9 +32,7 @@ export class Main extends Component {
         <Home
           dish={this.props.dishes.filter(dish => dish.featured)[0]}
           leader={this.props.leaders.filter(leader => leader.designation)[0]}
-          promotion={
-            this.props.promotions.filter(promotion => promotion.featured)[0]
-          }
+          promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
         />
       );
     };
@@ -36,9 +42,8 @@ export class Main extends Component {
       return (
         <DishDetail
           dish={this.props.dishes.filter(dish => dish.id === matchedId)[0]}
-          comments={this.props.comments.filter(
-            comment => comment.dishId === matchedId
-          )}
+          comments={this.props.comments.filter(comment => comment.dishId === matchedId)}
+          addComment={this.props.addComment}
         />
       );
     };
@@ -68,4 +73,4 @@ export class Main extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

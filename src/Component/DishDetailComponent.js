@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { Component } from "react";
 import {
   Card,
@@ -18,7 +20,7 @@ import {
 import { Link } from "react-router-dom";
 import { LocalForm, Control, Errors } from "react-redux-form";
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
   // if no comments return empty `div`
   if (!comments) return <div></div>;
   // else, if there are comment(s)
@@ -44,7 +46,7 @@ function RenderComments({ comments }) {
     <div>
       <h4>Comments</h4>
       <ul className="list-unstyled">{commentElement}</ul>
-      <CommentForm />
+      <CommentForm addComment={addComment} dishId={dishId} />
     </div>
   );
 }
@@ -76,8 +78,12 @@ export class CommentForm extends Component {
   }
 
   handleSubmit = values => {
-    alert("The Current State is: " + JSON.stringify(values));
-    console.log("The Current State is: " + JSON.stringify(values));
+    this.props.addComment(
+      this.props.dishId,
+      values.author,
+      values.rating,
+      values.comment
+    );
   };
 
   toggle = () => {
@@ -182,7 +188,11 @@ export const DishDetail = props => {
           <RenderDish dish={props.dish} />
         </div>
         <div className="col-12 col-md-5 m-1">
-          <RenderComments comments={props.comments} />
+          <RenderComments
+            comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
         </div>
       </div>
     </div>
