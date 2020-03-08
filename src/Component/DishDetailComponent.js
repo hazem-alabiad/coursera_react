@@ -19,6 +19,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { LocalForm, Control, Errors } from "react-redux-form";
+import Loading from "./LoadingComponent";
 
 function RenderComments({ comments, addComment, dishId }) {
   // if no comments return empty `div`
@@ -78,12 +79,7 @@ export class CommentForm extends Component {
   }
 
   handleSubmit = values => {
-    this.props.addComment(
-      this.props.dishId,
-      values.author,
-      values.rating,
-      values.comment
-    );
+    this.props.addComment(this.props.dishId, values.author, values.rating, values.comment);
   };
 
   toggle = () => {
@@ -174,6 +170,25 @@ export class CommentForm extends Component {
 }
 
 export const DishDetail = props => {
+  if (props.isLoading)
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+
+  if (props.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.errMess}</h4>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="container">
       <div className="row">
