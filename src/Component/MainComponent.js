@@ -1,16 +1,17 @@
 /** @format */
 
 import React, { Component } from "react";
-import { Menu } from "./MenuComponent";
-import Header from "./HeaderComponent";
-import Footer from "./FooterComponent";
-import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import Home from "./HomeComponent";
+import { connect } from "react-redux";
+import { actions } from "react-redux-form";
+import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import { addComment, fetchDishes } from "../redux/ActionCreators";
+import About from "./AboutComponent";
 import Contact from "./ContactComponent";
 import { DishDetail } from "./DishDetailComponent";
-import About from "./AboutComponent";
-import { connect } from "react-redux";
-import { addComment, fetchDishes } from "../redux/ActionCreators";
+import Footer from "./FooterComponent";
+import Header from "./HeaderComponent";
+import Home from "./HomeComponent";
+import { Menu } from "./MenuComponent";
 
 const mapStateToProps = state => {
   return {
@@ -26,6 +27,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addComment(dishId, author, rating, comment)),
   fetchDishes: () => {
     dispatch(fetchDishes());
+  },
+  resetFeedbackForm: () => {
+    dispatch(actions.reset("feedback"));
   }
 });
 
@@ -68,15 +72,19 @@ export class Main extends Component {
       return <Menu dishes={this.props.dishes} />;
     };
 
+    const ContactPage = () => {
+      return <Contact resetFeedbackForm={this.props.resetFeedbackForm} />;
+    };
+
     return (
       <div>
         <Header />
         <Switch>
           <Route path="/home" component={HomPage} />
           <Route path="/aboutus" component={AboutUsPage} />
-          <Route exact path="/menu" component={MenuPage} />
+          <Route path="/menu" component={MenuPage} />
           <Route path="/menu/:dishId" component={DishDetailPage} />
-          <Route exact path="/contactus" component={Contact} />
+          <Route path="/contactus" component={ContactPage} />
           <Redirect to="/home" />
         </Switch>
         <Footer />
