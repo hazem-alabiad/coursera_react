@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "react-redux-form";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
-import { addComment, fetchDishes } from "../redux/ActionCreators";
+import { addComment, fetchComments, fetchDishes, fetchProms } from "../redux/ActionCreators";
 import About from "./AboutComponent";
 import Contact from "./ContactComponent";
 import { DishDetail } from "./DishDetailComponent";
@@ -25,17 +25,17 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   addComment: (dishId, author, rating, comment) =>
     dispatch(addComment(dishId, author, rating, comment)),
-  fetchDishes: () => {
-    dispatch(fetchDishes());
-  },
-  resetFeedbackForm: () => {
-    dispatch(actions.reset("feedback"));
-  }
+  resetFeedbackForm: () => dispatch(actions.reset("feedback")),
+  fetchDishes: () => dispatch(fetchDishes()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchProms: () => dispatch(fetchProms())
 });
 
 export class Main extends Component {
   componentDidMount() {
     this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchProms();
   }
 
   render() {
@@ -43,10 +43,12 @@ export class Main extends Component {
       return (
         <Home
           dish={this.props.dishes.dishes.filter(dish => dish.featured)[0]}
+          dishIsLoading={this.props.dishes.isLoading}
+          DishErrMess={this.props.dishes.errMess}
+          promotion={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
+          promoIsLoading={this.props.promotions.isLoading}
+          promoErrMess={this.props.promotions.errMess}
           leader={this.props.leaders.filter(leader => leader.designation)[0]}
-          promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
-          isLoading={this.props.dishes.isLoading}
-          errMess={this.props.dishes.errMess}
         />
       );
     };
@@ -56,10 +58,11 @@ export class Main extends Component {
       return (
         <DishDetail
           dish={this.props.dishes.dishes.filter(dish => dish.id === matchedId)[0]}
-          comments={this.props.comments.filter(comment => comment.dishId === matchedId)}
+          dishIsLoading={this.props.dishes.isLoading}
+          DishErrMess={this.props.dishes.errMess}
+          comments={this.props.comments.comments.filter(comment => comment.dishId === matchedId)}
+          commentsErrMess={this.props.comments.errMess}
           addComment={this.props.addComment}
-          isLoading={this.props.dishes.isLoading}
-          errMess={this.props.dishes.errMess}
         />
       );
     };
@@ -82,7 +85,7 @@ export class Main extends Component {
         <Switch>
           <Route path="/home" component={HomPage} />
           <Route path="/aboutus" component={AboutUsPage} />
-          <Route path="/menu" component={MenuPage} />
+          <Route exact path="/menu" component={MenuPage} />
           <Route path="/menu/:dishId" component={DishDetailPage} />
           <Route path="/contactus" component={ContactPage} />
           <Redirect to="/home" />

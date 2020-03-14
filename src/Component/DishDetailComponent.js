@@ -1,24 +1,10 @@
 /** @format */
 
 import React, { Component } from "react";
-import {
-  Card,
-  CardImg,
-  CardBody,
-  CardTitle,
-  CardText,
-  Breadcrumb,
-  BreadcrumbItem,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Row,
-  Label,
-  Col
-} from "reactstrap";
+import { Control, Errors, LocalForm } from "react-redux-form";
 import { Link } from "react-router-dom";
-import { LocalForm, Control, Errors } from "react-redux-form";
+import { Breadcrumb, BreadcrumbItem, Button, Card, CardBody, CardImg, CardText, CardTitle, Col, Label, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
+import { baseUrl } from "../shared/baseUrl";
 import Loading from "./LoadingComponent";
 
 function RenderComments({ comments, addComment, dishId }) {
@@ -59,7 +45,7 @@ function RenderDish({ dish }) {
   const { id, name, image, description } = dish; // destructing
   return (
     <Card key={id}>
-      <CardImg src={image} alt={name} />
+      <CardImg src={ baseUrl + image} alt={name} />
       <CardBody>
         <CardTitle heading="true">{name}</CardTitle>
         <CardText>{description}</CardText>
@@ -170,7 +156,7 @@ export class CommentForm extends Component {
 }
 
 export const DishDetail = props => {
-  if (props.isLoading)
+  if (props.dishIsLoading)
     return (
       <div className="container">
         <div className="row">
@@ -179,16 +165,16 @@ export const DishDetail = props => {
       </div>
     );
 
-  if (props.errMess) {
+  if (props.dishErrMess) {
     return (
       <div className="container">
         <div className="row">
-          <h4>{props.errMess}</h4>
+          <h4>{props.dishErrMess}</h4>
         </div>
       </div>
     );
   }
-  
+
   return (
     <div className="container">
       <div className="row">

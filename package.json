@@ -8,7 +8,10 @@
     "@testing-library/user-event": "^10.0.0",
     "bootstrap": "^4.4.1",
     "bootstrap-social": "^5.1.1",
+    "cross-fetch": "^3.0.4",
     "font-awesome": "^4.7.0",
+    "json-server": "^0.16.1",
+    "minimist": "^1.2.5",
     "prettier": "^1.19.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -27,9 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "flow-init": "flow init",
-    "flow": "flow"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,8 +46,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "flow-bin": "^0.120.1"
   }
 }
