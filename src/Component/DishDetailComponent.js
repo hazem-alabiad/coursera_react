@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
+import { Fade, FadeTransform, Stagger } from "react-animation-components";
 import { Control, Errors, LocalForm } from "react-redux-form";
 import { Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, Button, Card, CardBody, CardImg, CardText, CardTitle, Col, Label, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
@@ -12,22 +13,28 @@ function RenderComments({ comments, postComment, dishId }) {
   if (!comments) return <div></div>;
   // else, if there are comment(s)
 
-  const commentElement = comments.map(commentObject => {
-    return (
-      <li key={commentObject.id}>
-        <p>{commentObject.comment}</p>
-        <p>
-          --
-          {commentObject.author},{" "}
-          {new Intl.DateTimeFormat("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "2-digit"
-          }).format(new Date(Date.parse(commentObject.date)))}
-        </p>
-      </li>
-    );
-  });
+  const commentElement = (
+    <Stagger in>
+      {comments.map(commentObject => {
+        return (
+          <Fade in>
+            <li key={commentObject.id}>
+              <p>{commentObject.comment}</p>
+              <p>
+                --
+                {commentObject.author},{" "}
+                {new Intl.DateTimeFormat("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit"
+                }).format(new Date(Date.parse(commentObject.date)))}
+              </p>
+            </li>
+          </Fade>
+        );
+      })}
+    </Stagger>
+  );
 
   return (
     <div>
@@ -44,13 +51,20 @@ function RenderDish({ dish }) {
   // else, if there is a dish selected
   const { id, name, image, description } = dish; // destructing
   return (
-    <Card key={id}>
-      <CardImg src={baseUrl + image} alt={name} />
-      <CardBody>
-        <CardTitle heading="true">{name}</CardTitle>
-        <CardText>{description}</CardText>
-      </CardBody>
-    </Card>
+    <FadeTransform
+      in
+      transformProps={{
+        exitTransform: "scale(1) translateY(-50%)"
+      }}
+    >
+      <Card key={id}>
+        <CardImg src={baseUrl + image} alt={name} />
+        <CardBody>
+          <CardTitle heading="true">{name}</CardTitle>
+          <CardText>{description}</CardText>
+        </CardBody>
+      </Card>
+    </FadeTransform>
   );
 }
 
