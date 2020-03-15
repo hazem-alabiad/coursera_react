@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import { Control, Errors, LocalForm } from "react-redux-form";
 import { Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, Button, Card, CardBody, CardImg, CardText, CardTitle, Col, Label, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
-import { baseUrl } from "../shared/baseUrl";
 import Loading from "./LoadingComponent";
 
 function RenderComments({ comments, addComment, dishId }) {
@@ -45,7 +44,7 @@ function RenderDish({ dish }) {
   const { id, name, image, description } = dish; // destructing
   return (
     <Card key={id}>
-      <CardImg src={ baseUrl + image} alt={name} />
+      <CardImg src={image} alt={name} />
       <CardBody>
         <CardTitle heading="true">{name}</CardTitle>
         <CardText>{description}</CardText>

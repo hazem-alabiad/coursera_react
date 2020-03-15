@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle } from "reactstrap";
-import { baseUrl } from "../shared/baseUrl";
 import Loading from "./LoadingComponent";
 
 function RenderItem({ item, isLoading, errMess }) {
@@ -10,7 +9,7 @@ function RenderItem({ item, isLoading, errMess }) {
   else if (errMess) return <h4>{errMess}</h4>;
   return (
     <Card>
-      <CardImg src={baseUrl + item.image} alt={item.name} />
+      <CardImg src={item.image} alt={item.name} />
       <CardBody>
         <CardTitle>{item.name}</CardTitle>
         {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null}
