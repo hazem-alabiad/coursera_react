@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "react-redux-form";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { fetchComments, fetchDishes, fetchProms, postComment } from "../redux/ActionCreators";
 import About from "./AboutComponent";
 import Contact from "./ContactComponent";
@@ -82,14 +83,18 @@ export class Main extends Component {
     return (
       <div>
         <Header />
-        <Switch>
-          <Route path="/home" component={HomPage} />
-          <Route path="/aboutus" component={AboutUsPage} />
-          <Route exact path="/menu" component={MenuPage} />
-          <Route path="/menu/:dishId" component={DishDetailPage} />
-          <Route path="/contactus" component={ContactPage} />
-          <Redirect to="/home" />
-        </Switch>
+        <TransitionGroup>
+          <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
+            <Switch>
+              <Route path="/home" component={HomPage} />
+              <Route path="/aboutus" component={AboutUsPage} />
+              <Route exact path="/menu" component={MenuPage} />
+              <Route path="/menu/:dishId" component={DishDetailPage} />
+              <Route path="/contactus" component={ContactPage} />
+              <Redirect to="/home" />
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
         <Footer />
       </div>
     );
