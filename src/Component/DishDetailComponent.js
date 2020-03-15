@@ -4,9 +4,10 @@ import React, { Component } from "react";
 import { Control, Errors, LocalForm } from "react-redux-form";
 import { Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, Button, Card, CardBody, CardImg, CardText, CardTitle, Col, Label, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
+import { baseUrl } from "../shared/baseUrl";
 import Loading from "./LoadingComponent";
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, postComment, dishId }) {
   // if no comments return empty `div`
   if (!comments) return <div></div>;
   // else, if there are comment(s)
@@ -32,7 +33,7 @@ function RenderComments({ comments, addComment, dishId }) {
     <div>
       <h4>Comments</h4>
       <ul className="list-unstyled">{commentElement}</ul>
-      <CommentForm addComment={addComment} dishId={dishId} />
+      <CommentForm postComment={postComment} dishId={dishId} />
     </div>
   );
 }
@@ -44,7 +45,7 @@ function RenderDish({ dish }) {
   const { id, name, image, description } = dish; // destructing
   return (
     <Card key={id}>
-      <CardImg src={image} alt={name} />
+      <CardImg src={baseUrl + image} alt={name} />
       <CardBody>
         <CardTitle heading="true">{name}</CardTitle>
         <CardText>{description}</CardText>
@@ -64,7 +65,7 @@ export class CommentForm extends Component {
   }
 
   handleSubmit = values => {
-    this.props.addComment(this.props.dishId, values.author, values.rating, values.comment);
+    this.props.postComment(this.props.dishId, values.author, values.rating, values.message);
   };
 
   toggle = () => {
@@ -190,7 +191,7 @@ export const DishDetail = props => {
         <div className="col-12 col-md-5 m-1">
           <RenderComments
             comments={props.comments}
-            addComment={props.addComment}
+            postComment={props.postComment}
             dishId={props.dish.id}
           />
         </div>

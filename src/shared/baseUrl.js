@@ -1,3 +1,3 @@
 /** @format */
 
-export const baseUrl = "http://localhost:3001/";
+export const baseUrl = "https://react-restaurant-server.herokuapp.com/";

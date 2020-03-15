@@ -1,21 +1,9 @@
 /** @format */
 
 import { baseUrl } from "../shared/baseUrl";
-import { COMMENTS } from "../shared/comments";
-import { DISHES } from "../shared/dishes";
 import * as ActionTypes from "./ActionTypes";
 
-export const addComment = (dishId, author, rating, comment) => ({
-  type: ActionTypes.ADD_COMMENT,
-  payload: {
-    dishId: dishId,
-    author: author,
-    rating: rating,
-    comment: comment
-  }
-});
-
-// dishes
+// * dishes
 export const dishesLoading = () => ({
   type: ActionTypes.DISHES_LOADING
 });
@@ -32,14 +20,71 @@ export const addDishes = dishes => ({
 
 export const fetchDishes = () => dispatch => {
   dispatch(dishesLoading());
-  // only for demo, as json-server runs locally only
-  // return fetch(baseUrl + "dishes")
-  //   .then(response => response.json())
-  //   .then(dishes => dispatch(addDishes(dishes)));
-  setTimeout(dispatch(addDishes(DISHES)), 2000);
+  return fetch(baseUrl + "dishes")
+    .then(
+      // if promise resolved
+      response => {
+        if (response.ok) return response;
+        else {
+          var error = new Error("Error: " + response.status + ": " + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      // if promise rejected
+      error => {
+        throw error;
+      }
+    )
+    .then(response => response.json())
+    .then(dishes => dispatch(addDishes(dishes)))
+    .catch(error => dispatch(dishesFailed(error.message)));
 };
 
-// comments
+// * comments
+export const addComment = comment => ({
+  type: ActionTypes.ADD_COMMENT,
+  payload: comment
+});
+
+export const postComment = (dishId, author, rating, comment) => dispatch => {
+  const newComment = {
+    dishId: dishId,
+    author: author,
+    rating: rating,
+    comment: comment
+  };
+  newComment.date = new Date().toISOString();
+
+  // now, send POST request to DB through Fetch API
+  return fetch(baseUrl + "comments", {
+    method: "POST",
+    body: JSON.stringify(newComment),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "same-origin"
+  })
+    .then(
+      // if  promise resolved
+      response => {
+        if (response.ok) return response;
+        else {
+          var error = new Error("Error: " + response.status + ": " + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      // if promise rejected
+      error => {
+        throw error;
+      }
+    )
+    .then(response => response.json())
+    .then(response => dispatch(addComment(response)))
+    .catch(error => dispatch(commentsFailed(error.message)));
+};
+
 export const commentsFailed = errMess => ({
   type: ActionTypes.COMMENTS_FAILED,
   payload: errMess
@@ -51,14 +96,28 @@ export const addComments = comments => ({
 });
 
 export const fetchComments = () => dispatch => {
-  // only for demo, as json-server runs locally only
-  // return fetch(baseUrl + "comments")
-  //   .then(response => response.json())
-  //   .then(comments => dispatch(addComments(comments)));
-  setTimeout(dispatch(addComments(COMMENTS)), 2000);
+  return fetch(baseUrl + "comments")
+    .then(
+      // if promise resolved
+      response => {
+        if (response.ok) return response;
+        else {
+          var error = new Error("Error: " + response.status + ": " + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      // if promise rejected
+      error => {
+        throw error;
+      }
+    )
+    .then(response => response.json())
+    .then(comments => dispatch(addComments(comments)))
+    .catch(error => dispatch(commentsFailed(error.message)));
 };
 
-// promotions
+// * promotions
 export const promsLoading = () => ({
   type: ActionTypes.PROMS_LOADING
 });
@@ -77,22 +136,23 @@ export const fetchProms = () => dispatch => {
   dispatch(promsLoading());
   // only for demo, as json-server runs locally only
   return fetch(baseUrl + "promotions")
-    .then(response => {
-      // if promise returns value
-      if (response.ok) {
-        return response;
-      } else {
-        var error = new Error("Error: " + response.status + ": " + response.statusText);
-        error.response = response
-        throw error
+    .then(
+      response => {
+        // if promise resolved
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error("Error: " + response.status + ": " + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      // if promise rejected
+      error => {
+        throw error;
       }
-    }, error => {
-      var errMess = new Error(error.message)
-      throw errMess
-    })
+    )
     .then(response => response.json())
     .then(proms => dispatch(addProms(proms)))
-    .catch(error => dispatch(promsFailed(error.message)))
-
-  // setTimeout(dispatch(addProms(PROMOTIONS)), 2000);
+    .catch(error => dispatch(promsFailed(error.message)));
 };
