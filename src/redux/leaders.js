@@ -1,8 +1,21 @@
 /** @format */
+import * as ActionTypes from "./ActionTypes";
 
-import { LEADERS } from "../shared/leaders";
-export const Leaders = (state = LEADERS, action) => {
+export const Leaders = (
+  state = {
+    isLoading: true,
+    errMess: null,
+    leaders: []
+  },
+  action
+) => {
   switch (action.type) {
+    case ActionTypes.ADD_LEADERS:
+      return { ...state, isLoading: false, errMess: null, leaders: action.payload };
+    case ActionTypes.LEADERS_FAILED:
+      return { ...state, isLoading: false, errMess: action.payload, leaders: [] };
+    case ActionTypes.LEADERS_LOADING:
+      return { ...state, isLoading: true, errMess: null, leaders: [] };
     default:
       return state;
   }

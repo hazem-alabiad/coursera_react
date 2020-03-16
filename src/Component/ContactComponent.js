@@ -22,8 +22,8 @@ export default class Contact extends Component {
 
   handleSubmit(values) {
     // * debugging issues
-    console.log("Current state is:\n" + JSON.stringify(values));
     this.props.resetFeedbackForm();
+    this.props.postFeedback(values);
   }
 
   render() {

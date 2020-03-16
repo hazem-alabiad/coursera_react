@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { actions } from "react-redux-form";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { fetchComments, fetchDishes, fetchProms, postComment } from "../redux/ActionCreators";
+import { fetchComments, fetchDishes, fetchLeaders, fetchProms, postComment, postFeedback } from "../redux/ActionCreators";
 import About from "./AboutComponent";
 import Contact from "./ContactComponent";
 import { DishDetail } from "./DishDetailComponent";
@@ -29,7 +29,9 @@ const mapDispatchToProps = dispatch => ({
   resetFeedbackForm: () => dispatch(actions.reset("feedback")),
   fetchDishes: () => dispatch(fetchDishes()),
   fetchComments: () => dispatch(fetchComments()),
-  fetchProms: () => dispatch(fetchProms())
+  fetchProms: () => dispatch(fetchProms()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
+  postFeedback: feedback => dispatch(postFeedback(feedback))
 });
 
 export class Main extends Component {
@@ -37,6 +39,7 @@ export class Main extends Component {
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchProms();
+    this.props.fetchLeaders();
   }
 
   render() {
@@ -49,7 +52,9 @@ export class Main extends Component {
           promotion={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
           promoIsLoading={this.props.promotions.isLoading}
           promoErrMess={this.props.promotions.errMess}
-          leader={this.props.leaders.filter(leader => leader.designation)[0]}
+          leader={this.props.leaders.leaders.filter(leader => leader.designation)[0]}
+          leaderIsLoading={this.props.leaders.isLoading}
+          leaderErrMess={this.props.leaders.errMess}
         />
       );
     };
@@ -69,7 +74,13 @@ export class Main extends Component {
     };
 
     const AboutUsPage = () => {
-      return <About leaders={this.props.leaders} />;
+      return (
+        <About
+          leaders={this.props.leaders.leaders}
+          leadersIsLoading={this.props.leaders.isLoading}
+          leadersErrMess={this.props.leaders.errMess}
+        />
+      );
     };
 
     const MenuPage = () => {
@@ -77,7 +88,12 @@ export class Main extends Component {
     };
 
     const ContactPage = () => {
-      return <Contact resetFeedbackForm={this.props.resetFeedbackForm} />;
+      return (
+        <Contact
+          resetFeedbackForm={this.props.resetFeedbackForm}
+          postFeedback={this.props.postFeedback}
+        />
+      );
     };
 
     return (

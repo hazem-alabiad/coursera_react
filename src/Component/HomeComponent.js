@@ -47,7 +47,11 @@ export default function Home(props) {
           />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderItem item={props.leader} />
+          <RenderItem
+            item={props.leader}
+            isLoading={props.leaderIsLoading}
+            errMess={props.leaderErrMess}
+          />
         </div>
       </div>
     </div>
